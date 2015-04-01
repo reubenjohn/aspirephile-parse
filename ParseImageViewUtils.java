@@ -20,12 +20,10 @@ public class ParseImageViewUtils {
         asserter = new NullPointerAsserter(l);
     }
 
-    public void loadParseImage(ParseImageView parseImageView, ParseFile imageFile) {
-        if (asserter.assertPointer(imageFile))
+    public boolean loadParseImage(ParseImageView parseImageView, ParseFile imageFile) {
+        final boolean[] success = {true};
+        if (asserter.assertPointerQuietly(imageFile)) {
             l.d("Loading parse image view: " + parseImageView + " with -> photo file: " + imageFile);
-        else
-            l.w("Photo file for parse image view: " + parseImageView + " is null!");
-        if (asserter.assertPointer(imageFile)) {
             parseImageView.setParseFile(imageFile);
             parseImageView.loadInBackground(new GetDataCallback() {
                 @Override
@@ -34,14 +32,21 @@ public class ParseImageViewUtils {
                     if (data != null)
                         size = data.length;
 
-                    if (e != null)
+                    if (asserter.assertPointerQuietly(e)) {
                         e.printStackTrace();
-                    else if (size > 0)
+                        success[0] = false;
+                    } else if (size > 0)
                         l.d("Parse image view loaded " + size + " bytes successfully");
-                    else
+                    else {
                         l.e("Parse image view loaded 0 bytes!");
+                        success[0] = false;
+                    }
                 }
             });
+        } else {
+            l.w("Photo file for parse image view: " + parseImageView + " is null!");
+            success[0] = false;
         }
+        return success[0];
     }
 }
