@@ -1,9 +1,10 @@
 package com.aspirephile.shared.parse;
 
-import com.funtainment.event.field.Category;
+
+import com.parse.ParseObject;
 
 import java.util.ArrayList;
 
-public interface OnParseObjectsSelectedListener {
-    public void onParseObjectsSelectedListener(ArrayList<Category> selectedObjectIds);
+public interface OnParseObjectsSelectedListener<E> {
+    public void onParseObjectsSelectedListener(ArrayList<E> selectedObjectIds);
 }
