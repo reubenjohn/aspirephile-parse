@@ -21,6 +21,10 @@ public class ParseImageViewUtils {
     }
 
     public boolean loadParseImage(ParseImageView parseImageView, ParseFile imageFile) {
+        return loadParseImage(parseImageView, imageFile, null);
+    }
+
+    public boolean loadParseImage(ParseImageView parseImageView, ParseFile imageFile, final GetDataCallback callback) {
         final boolean[] success = {true};
         if (asserter.assertPointerQuietly(imageFile)) {
             l.d("Loading parse image view: " + parseImageView + " with -> photo file: " + imageFile);
@@ -28,6 +32,8 @@ public class ParseImageViewUtils {
             parseImageView.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
+                    if (callback != null)
+                        callback.done(data, e);
                     int size = 0;
                     if (data != null)
                         size = data.length;
