@@ -6,5 +6,5 @@ import com.parse.ParseObject;
 import java.util.ArrayList;
 
 public interface OnParseObjectsSelectedListener<E> {
-    public void onParseObjectsSelectedListener(ArrayList<E> selectedObjectIds);
+    void onParseObjectsSelectedListener(ArrayList<E> selectedObjectIds);
 }
