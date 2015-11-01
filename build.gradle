@@ -20,7 +20,7 @@ android {
 
 dependencies {
     compile project(':shared')
-    compile fileTree(dir: 'libs', include: ['Parse-1.9.3.jar'])
-    compile 'com.parse.bolts:bolts-android:1.2.0'
+    compile fileTree(dir: 'libs', include: ['Parse-1.10.3.jar'])
+    compile 'com.parse.bolts:bolts-android:1.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
 }
