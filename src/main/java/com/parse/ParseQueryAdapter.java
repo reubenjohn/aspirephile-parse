@@ -98,18 +98,18 @@ public class ParseQueryAdapter<T extends ParseObject> extends BaseAdapter {
   /**
    * Implement to construct your own custom {@link ParseQuery} for fetching objects.
    */
-  public static interface QueryFactory<T extends ParseObject> {
-    public ParseQuery<T> create();
+  public interface QueryFactory<T extends ParseObject> {
+    ParseQuery<T> create();
   }
 
   /**
    * Implement with logic that is called before and after objects are fetched from Parse by the
    * adapter.
    */
-  public static interface OnQueryLoadListener<T extends ParseObject> {
-    public void onLoading();
+  public interface OnQueryLoadListener<T extends ParseObject> {
+    void onLoading();
 
-    public void onLoaded(List<T> objects, Exception e);
+    void onLoaded(List<T> objects, Exception e);
   }
 
   // The key to use to display on the cell text label.
