@@ -132,27 +132,33 @@ public class CacheSyncManager<T extends ParseObject> {
         T.unpinAllInBackground(tag, new DeleteCallback() {
             @Override
             public void done(ParseException e) {
-                if (list.size() > 0) {
-                    for (T t : list) {
-                        ParseACL publicACL = new ParseACL();
-                        publicACL.setPublicReadAccess(true);
-                        publicACL.setPublicWriteAccess(true);
-                        t.setACL(publicACL);
-                    }
-                    l.d("Pinning list of size: " + list.size() + " in background");
-                    T.pinAllInBackground(tag, list, new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (asserter.assertPointerQuietly(e)) {
-                                e.printStackTrace();
-                            } else {
-                                l.d("Successfully pinned list of size: " + list.size());
-                                refreshListFromLocalDatastore();
-                            }
-                        }
-                    });
+                if (asserter.assertPointerQuietly(e)) {
+                    e.printStackTrace();
                 } else {
-                    l.w("Cannot pin list of size: " + list.size());
+                    l.d("Successfully unpinned all items in background");
+                    if (list.size() > 0) {
+                        for (T t : list) {
+                            ParseACL publicACL = new ParseACL();
+                            publicACL.setPublicReadAccess(true);
+                            publicACL.setPublicWriteAccess(true);
+                            t.setACL(publicACL);
+                        }
+                        l.d("Pinning list of size: " + list.size() + " in background");
+                        T.pinAllInBackground(tag, list, new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (asserter.assertPointerQuietly(e)) {
+                                    e.printStackTrace();
+                                } else {
+                                    l.d("Successfully pinned list of size: " + list.size());
+                                    refreshListFromLocalDatastore();
+                                }
+                            }
+                        });
+                    } else {
+                        l.w("Cannot pin list of size: " + list.size());
+                        refreshListFromLocalDatastore();
+                    }
                 }
             }
         });
